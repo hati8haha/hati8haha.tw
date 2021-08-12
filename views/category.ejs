@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('template/head') %>
+</head>
+<body>
+  <div class="outter__wrapper">
+    <%- include('template/navbar') %>
+    <%- include('template/banner') %>
+    <div class="main">
+      <div class="article__wrapper">
+        <% if (username && username.length > 0) { %>
+        <div class="new-category">
+          <form class="category__form" method="POST" action="/category/new">
+            <input type="text" name="category" class="category-input" placeholder="新增類別">
+            <input type="submit" class="category-submit" value="新增">
+          </form>
+          <% if (errorMessage && errorMessage.length > 0) { %>
+            <div class="empty-alert">
+              <%= errorMessage %>
+            </div>
+          <% } %>
+        </div>
+        <% } %>
+        <% categories.forEach(function(category) { %>
+        <div class="article__block  blog__admin">
+          <div class="article__block-upper blog__admin">
+            <div class="article__title blog__admin"><a href="/articles/category/<%= category.dataValues.id %>"><%= category.dataValues.name %></a></div>
+            <% if (username && username.length > 0) { %>
+            <div class="article__action">
+              <a class="article__delete" href="/category/delete/<%= category.dataValues.id %>">刪除</a>
+            </div>
+            <% } %>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+    <%- include('template/footer') %>
+  </div>
+</body>
+</html>

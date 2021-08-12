@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('template/head') %>
+</head>
+<body>
+  <div class="outter__wrapper">
+    <%- include('template/navbar') %>
+    <%- include('template/banner') %>
+
+    <div class="main">
+      <div class="article__wrapper">
+        <div class="article__block">
+          <div class="article__block-upper">
+            <div class="article__title"><h1>發表文章：</h1></div>
+            <div class="article__action"></div>
+          </div>
+          <div class="article__form-block">
+            <form action="/edit/<% if(update) %><%= id; %>" method='post' class='article__form'>
+              <input type="text" name="title" class="article__edit-title" placeholder="請輸入標題" value="<% if(update) %> <%= title; %>">
+              <select name="category" class="article__edit-category">
+                <option value="" disabled selected>請選擇文章分類</option>
+                <% categories.forEach(function(category) { %>
+                <option value="<%= category.dataValues.id %>" <% if(update && categoryId === category.dataValues.id) { %> <%= "selected='selected'"; %> <% } %>>
+                  <%= category.dataValues.name %>
+                </option>
+                <% }) %>
+              </select>
+              <textarea id="editor" name="textarea" class="article__edit-content"><% if(update) %> <%= content; %></textarea>
+              <input type="submit" class="article__submit">
+            </form>
+            <% if (errorMessage && errorMessage.length > 0) { %>
+              <div class="empty-alert">
+                <%= errorMessage %>
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%- include('template/footer') %>
+
+  </div>
+  <script src="https://cdn.ckeditor.com/ckeditor5/28.0.0/classic/ckeditor.js"></script>
+  <script>
+    let editor;
+    ClassicEditor
+      .create( document.querySelector( '#editor' ) )
+      .then( newEditor => {
+        editor = newEditor;
+        console.log( editor );
+      } )
+      .catch( error => {
+        console.error( error );
+      } );
+    document.querySelector("input[type='submit']").addEventListener('click', (e) => {
+      let submitPass = true
+      let checkTitle = document.querySelector('.article__edit-title').value
+      let checkCategory = document.querySelector('.article__edit-category').value
+      const editorData = editor.getData()
+
+      if (document.querySelector('.empty-alert')) {
+        document.querySelector('.empty-alert').remove()
+      }
+      
+      let notify = (data) => {
+        let div = document.createElement('div')
+        div.classList.add('empty-alert')
+        div.innerHTML = `欄位未填寫完整`
+        data.parentNode.appendChild(div)
+      }
+
+      if (checkTitle === '' || checkCategory === '' || editorData === '') {
+        notify(document.querySelector('.article__edit-title'))
+        e.preventDefault()
+      }
+    })
+  </script>
+</body>
+</html>

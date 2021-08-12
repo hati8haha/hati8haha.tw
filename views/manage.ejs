@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('template/head') %>
+</head>
+<body>
+  <div class="outter__wrapper">
+    <%- include('template/navbar') %>
+    <%- include('template/banner') %>
+
+    <div class="main">
+      <div class="article__wrapper">
+        <% if(articles.length === 0) {%>
+          <div class="article__block  blog__admin">
+            <div class="article__block-upper blog__admin">
+              <div class="article__title blog__admin">這個分類沒有文章 ୧〳 ＾ ౪ ＾ 〵୨</div>
+            </div>
+          </div>
+        <% } else { %>          
+        <% articles.forEach(function(article) { %>
+        <div class="article__block  blog__admin">
+          <div class="article__block-upper blog__admin">
+            <div class="article__title blog__admin"><a href="/article/<%= article.dataValues.id %>"><%= article.dataValues.title %></a></div>
+            <div class="article__action">
+              <span class="article__time blog__admin"><%= article.Category.name %></span>
+              <span class="article__time blog__admin"> | <%= article.dataValues.createdAt.toISOString().slice(0,16).replace('T', ' ') %></span>
+              <% if (username && username.length > 0 && username === article.User.username) { %>
+              <a class="article__delete" href="/article/delete/<%= article.dataValues.id %>">刪除</a>
+              <a class="article__edit"  href="/edit/<%= article.dataValues.id %>">編輯</a>
+              <% } %>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+        <% } %>
+      </div>
+    </div>
+    <%- include('template/footer') %>
+  </div>
+</body>
+</html>
