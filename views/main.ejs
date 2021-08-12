@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('template/head') %>
+</head>
+<body>
+  <div class="outter__wrapper">
+    <%- include('template/navbar') %>
+    <%- include('template/banner') %>
+
+    <div class="main">
+      <% articles.forEach(function(article) { %>
+      <div class="article__wrapper">
+        <div class="article__block">
+          <div class="article__block-upper">
+            <div class="article__title"><%= article.dataValues.title %></div>
+            <% if (username && username.length > 0 && username === article.User.username) { %>
+            <div class="article__action">
+              <a class="article__delete" href="/article/delete/<%= article.dataValues.id %>">刪除</a>
+              <a class="article__edit"  href="/edit/<%= article.dataValues.id %>">編輯</a>
+            </div>
+            <% } %>
+          </div>
+          <div class="article__info">
+            <span class="article__time">Created at: <%= article.dataValues.createdAt.toISOString().slice(0,16).replace('T', ' ') %></span>
+            <span class="article__category">分類 : <%= article.Category.name %></span>
+          </div>
+          <div class="article__content"><%- article.dataValues.content %></div>
+          <a class="article__read-more" href="/article/<%= article.dataValues.id %>">READ MORE</a>
+        </div>
+      </div>
+      <% }) %>
+      <div class="paginator">
+        <% if(page !== 1) { %>
+          <a href="/page/1">首頁</a>
+          <a href="/page/<%= page-1%>">上一頁</a>
+        <% } %>
+        <% if (page !== totalPage) { %>
+          <a href="/page/<%= page+1 %>">下一頁</a>
+          <a href="/page/<%= totalPage%>">最後一頁</a> 
+        <% } %>
+      </div>
+      <div class="page-info">
+        <span>總共有 <%= count %> 篇文章，頁數：</span>
+        <span><%= page %> / <%= totalPage %></span>
+      </div>
+    </div>
+    <%- include('template/footer') %>
+	</div>
+</body>
+</html>
