@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('template/head') %>
+</head>
+<body>
+  <div class="outter__wrapper">
+    <%- include('template/navbar') %>
+    <%- include('template/banner') %>
+
+    <div class="main">
+      <div class="article__wrapper">
+        <div class="article__block">
+          <div class="article__block-upper">
+            <div class="article__title"><h1><%= article.dataValues.title %></h1></div>
+            <% if (username && username.length > 0 && username === article.User.username) { %>
+            <div class="article__action">
+              <a class="article__delete" href="/article/delete/<%= id %>">刪除</a>
+              <a class="article__edit"  href="/edit/<%= id %>">編輯</a>
+            </div>
+            <% } %>
+          </div>
+          <div class="article__info">
+            <span class="article__time">Created at: <%= article.dataValues.createdAt.toISOString().slice(0,16).replace('T', ' ') %></span>
+            <span class="article__category">分類 : <%= article.Category.name %></span>
+          </div>
+          <div class="article__content article__page"><%- article.dataValues.content %></div>
+        </div>
+      </div>
+    </div>
+    <%- include('template/footer') %>
+  </div>
+</body>
+</html>

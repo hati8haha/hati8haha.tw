@@ -1,0 +1,24 @@
+<nav class="navbar">
+  <div class="nav__left">
+    <div class="site-name"><a href="/">牛牛牧場</a></div>
+    <ul class="navbar__list">
+      <% if (username && username.length > 0) { %>
+      <li class="navbar__list-item"><a href="/manage">後臺管理</a></li>
+      <li class="navbar__list-item"><a href="/category">分類管理</a></li>
+      <% } else {%>
+      <li class="navbar__list-item"><a href="/manage">文章列表</a></li>
+      <li class="navbar__list-item"><a href="/category">分類專區</a></li>  
+      <% } %>
+    </ul>
+  </div>
+  <div class="nav__right">
+    <ul class="navbar__list">
+      <% if(username) { %>
+      <li class="navbar__list-item"><a href="/edit">新增文章</a></li>
+      <li class="navbar__list-item"><a href="/logout">登出</a></li>
+      <% } else { %>
+      <li class="navbar__list-item"><a href="/login">登入</a></li>
+      <% } %>
+    </ul>
+  </div>
+</nav>
